@@ -6,7 +6,7 @@
 /*   By: thovan-d <thovan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 17:33:45 by thovan-d          #+#    #+#             */
-/*   Updated: 2023/03/14 18:28:12 by thovan-d         ###   ########.fr       */
+/*   Updated: 2023/03/23 14:00:36 by thovan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,9 @@ char	**find_make_map(char *file)
 	check_last_wall (map[y - 1], x);
 	check_mid_chars (map, x, (y - 2));
 	check_freq_chars1 (map, x, (y - 2));
-	check_freq_chars2 (map, x, (y - 2), '0');
-	check_side_walls(map, (x - 2), (y - 2));
-	check_if_rectangular(file, x);
+	check_freq_chars2 (map, x, (y - 1), '0');
+	check_side_walls(map, (y - 2));
+	check_if_rectangular(map, (y - 1), (x - 1));
+	find_start(map, (y - 1), x);
 	return (map);
 }

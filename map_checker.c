@@ -6,7 +6,7 @@
 /*   By: thovan-d <thovan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:49:13 by thovan-d          #+#    #+#             */
-/*   Updated: 2023/03/14 17:13:32 by thovan-d         ###   ########.fr       */
+/*   Updated: 2023/03/21 18:51:36 by thovan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	check_freq_chars2(char **map, int x, int y, int i)
 	}
 	if (e != 1 || c < 1)
 	{
-		ft_printf("Error\nInvalid Map");
+		ft_printf("Error\nhiero?? Invalid Map");
 		exit(0);
 	}
 	return (0);
@@ -77,9 +77,10 @@ int	check_mid_chars(char **map, int x, int y)
 		{
 			if (map[y][i] != '1' && map[y][i] != '0'
 			&& map[y][i] != 'E' && map[y][i] != 'P'
-			&& map[y][i] != 'C' && map[y][i] != '\n')
+			&& map[y][i] != 'C' && map[y][i] != '\n'
+			&& map[y][i] != '\0')
 			{
-				ft_printf("Error\nWrong Contents");
+				ft_printf("Error\nInvalid map");
 				exit(0);
 			}
 			i++;
