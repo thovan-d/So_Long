@@ -6,13 +6,13 @@
 /*   By: thovan-d <thovan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 17:33:45 by thovan-d          #+#    #+#             */
-/*   Updated: 2023/03/23 14:00:36 by thovan-d         ###   ########.fr       */
+/*   Updated: 2023/03/23 16:16:40 by thovan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char	**fill_map(char **map, char *file, int y, int x)
+char	**fill_map(t_mapping *mapping, char *file)
 {
 	int		fd;
 	int		i;
@@ -20,22 +20,22 @@ char	**fill_map(char **map, char *file, int y, int x)
 
 	i = 0;
 	fd = open(file, O_RDONLY);
-	temp = malloc((x + 1) * sizeof(char));
+	temp = malloc((mapping->x + 1) * sizeof(char));
 	if (!temp)
 		return (NULL);
-	while (i <= y)
+	while (i <= mapping->y)
 	{
 		temp = get_next_line(fd);
 		if (temp != NULL)
 		{
-			map[i] = temp;
-			ft_printf("%s", map[i]);
+			mapping->map[i] = temp;
+			ft_printf("%s", mapping->map[i]);
 		}
 		i++;
 	}
 	close(fd);
 	free(temp);
-	return (map);
+	return (mapping->map);
 }
 
 char	**allocate_map(int x, int y)
@@ -102,29 +102,23 @@ int	find_y(char *file)
 	return (y);
 }
 
-char	**find_make_map(char *file)
+char	**find_make_map(char *file, t_mapping *mapping)
 {
-	int		x;
-	int		y;
-	char	**map;
-
-	y = 0;
-	x = 0;
-	y = find_y(file);
-	x = find_x(file);
-	if (x == -1)
+	mapping->y = find_y(file);
+	mapping->x = find_x(file);
+	if (mapping->x == -1)
 		return (printf("Invalid Map"), NULL);
-	map = allocate_map(x, y);
-	map = fill_map(map, file, y, x);
-	if (!map)
+	mapping->map = allocate_map(mapping->x, mapping->y);
+	mapping->map = fill_map(mapping, file);
+	if (!mapping->map)
 		return (0);
-	check_1st_wall (map[0], x);
-	check_last_wall (map[y - 1], x);
-	check_mid_chars (map, x, (y - 2));
-	check_freq_chars1 (map, x, (y - 2));
-	check_freq_chars2 (map, x, (y - 1), '0');
-	check_side_walls(map, (y - 2));
-	check_if_rectangular(map, (y - 1), (x - 1));
-	find_start(map, (y - 1), x);
-	return (map);
+	check_1st_wall (mapping->map[0], mapping->x);
+	check_last_wall (mapping->map[mapping->y - 1], mapping->x);
+	check_mid_chars (mapping->map, mapping->x, (mapping->y - 2));
+	check_freq_chars1 (mapping->map, mapping->x, (mapping->y - 2));
+	check_freq_chars2 (mapping->map, mapping->x, (mapping->y - 1), '0');
+	check_side_walls(mapping->map, (mapping->y - 2));
+	check_if_rectangular(mapping->map, (mapping->y - 1), (mapping->x - 1));
+	find_start(mapping->map, (mapping->y - 1), mapping->x, mapping->p);
+	return (mapping->map);
 }
