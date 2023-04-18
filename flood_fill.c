@@ -6,17 +6,29 @@
 /*   By: thovan-d <thovan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 17:43:30 by thovan-d          #+#    #+#             */
-/*   Updated: 2023/03/23 16:56:55 by thovan-d         ###   ########.fr       */
+/*   Updated: 2023/04/18 12:57:02 by thovan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	set_p(int p)
+char	**map_backup(t_mapping *mapping, char *file)
 {
-	if (p == 0)
-		p = 1;
-	return (p);
+	char	**temp;
+	int		i;
+	int		fd;
+
+	i = 0;
+	fd = open(file, O_RDONLY);
+	temp = allocate_map(mapping->x, mapping->y);
+	if (temp == NULL)
+		return (0);
+	while (i <= mapping->y)
+	{
+		temp[i] = get_next_line(fd);
+		i++;
+	}
+	return (temp);
 }
 
 char	get_char(int y, int x, char **map)
@@ -52,7 +64,7 @@ int	flood_fill(int y, int x, int p, char **map)
 	return (p);
 }
 
-int	find_start(char **map, int y, int x, int p)
+int	find_start(t_mapping *mapping, char **map, int y, int x)
 {
 	int	i;
 	int	result;
@@ -64,7 +76,9 @@ int	find_start(char **map, int y, int x, int p)
 		{
 			if (map[y][i] == 'P')
 			{	
-				result = flood_fill(y, i, p, map);
+				mapping->player_y = y;
+				mapping->player_x = i;
+				result = flood_fill(y, i, mapping->p, map);
 			}
 			i++;
 		}

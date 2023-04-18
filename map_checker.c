@@ -6,19 +6,18 @@
 /*   By: thovan-d <thovan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 12:49:13 by thovan-d          #+#    #+#             */
-/*   Updated: 2023/03/21 18:51:36 by thovan-d         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:12:56 by thovan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	check_freq_chars2(char **map, int x, int y, int i)
+int	check_freq_chars2(char **map, int x, int y, int i, t_mapping *mapping)
 {
 	int	e;
-	int	c;
 
 	e = 0;
-	c = 0;
+	mapping->collectables = 0;
 	while (y >= 1)
 	{
 		while (i < x)
@@ -26,15 +25,15 @@ int	check_freq_chars2(char **map, int x, int y, int i)
 			if (map[y][i] == 'E')
 				e++;
 			if (map[y][i] == 'C')
-				c++;
+				mapping->collectables++;
 			i++;
 		}
 		i = 0;
 		y--;
 	}
-	if (e != 1 || c < 1)
+	if (e != 1 || mapping->collectables < 1)
 	{
-		ft_printf("Error\nhiero?? Invalid Map");
+		ft_printf("Error\nInvalid Map Contents");
 		exit(0);
 	}
 	return (0);

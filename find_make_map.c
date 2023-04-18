@@ -6,7 +6,7 @@
 /*   By: thovan-d <thovan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 17:33:45 by thovan-d          #+#    #+#             */
-/*   Updated: 2023/03/23 16:16:40 by thovan-d         ###   ########.fr       */
+/*   Updated: 2023/04/18 15:25:28 by thovan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,7 @@ char	**fill_map(t_mapping *mapping, char *file)
 	{
 		temp = get_next_line(fd);
 		if (temp != NULL)
-		{
 			mapping->map[i] = temp;
-			ft_printf("%s", mapping->map[i]);
-		}
 		i++;
 	}
 	close(fd);
@@ -44,7 +41,7 @@ char	**allocate_map(int x, int y)
 	char	**map;
 
 	i = 0;
-	map = (char **)malloc(y * sizeof(char *));
+	map = (char **)malloc((y + 1) * sizeof(char *));
 	if (!map)
 		return (NULL);
 	while (i < y)
@@ -116,9 +113,14 @@ char	**find_make_map(char *file, t_mapping *mapping)
 	check_last_wall (mapping->map[mapping->y - 1], mapping->x);
 	check_mid_chars (mapping->map, mapping->x, (mapping->y - 2));
 	check_freq_chars1 (mapping->map, mapping->x, (mapping->y - 2));
-	check_freq_chars2 (mapping->map, mapping->x, (mapping->y - 1), '0');
+	check_freq_chars2 (mapping->map, mapping->x,
+		(mapping->y - 1), '0', mapping);
+	// (mapping->map, mapping->x,(mapping->y - 1), '0', mapping);
 	check_side_walls(mapping->map, (mapping->y - 2));
 	check_if_rectangular(mapping->map, (mapping->y - 1), (mapping->x - 1));
-	find_start(mapping->map, (mapping->y - 1), mapping->x, mapping->p);
+	mapping->map_backup = map_backup(mapping, file);
+	find_start(mapping, mapping->map_backup,
+		(mapping->y - 1), mapping->x);
+	check_collectables(mapping);
 	return (mapping->map);
 }

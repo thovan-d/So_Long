@@ -6,11 +6,27 @@
 /*   By: thovan-d <thovan-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:56:33 by thovan-d          #+#    #+#             */
-/*   Updated: 2023/03/21 17:43:42 by thovan-d         ###   ########.fr       */
+/*   Updated: 2023/03/30 16:57:15 by thovan-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void	check_collectables(t_mapping *mapping)
+{
+	int	i;
+
+	i = 0;
+	while (mapping->map_backup[i])
+	{
+		if (ft_strchr(mapping->map_backup[i], 67) != 0)
+		{
+			ft_printf("Error\nMap Impossible");
+			exit(0);
+		}
+		i++;
+	}
+}
 
 char	*ft_remove_nl(char *s)
 {
